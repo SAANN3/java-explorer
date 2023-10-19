@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml" fx:id="root"  >
+    <Button text="&lt;" onAction="#backButton"/>
+    <Button text="&gt;" onAction="#forwardButton"/>
+    <Button text="↑"    onAction="#upButton"/>
+    <HBox minWidth="10"/>
+    <Label fx:id="currentFolderName" VBox.vgrow="ALWAYS" maxHeight="Infinity" alignment="CENTER" />
+</fx:root>

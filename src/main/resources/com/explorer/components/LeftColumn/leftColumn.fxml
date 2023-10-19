@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import com.explorer.components.LeftColumn.*?>
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml"  fillWidth="false" >
+    <Label text="disks:" />
+    <VBox fx:id="disk_placement"  >
+        <padding>
+            <Insets left="20.0"/>
+        </padding>
+    </VBox>
+</fx:root>

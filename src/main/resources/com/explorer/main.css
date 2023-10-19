@@ -1,0 +1,9 @@
+.context-menu {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.6) , 6, 0.0 , 0 , 0);
+}
+.root{
+
+}
+.borderStyle {
+    -fx-border-style:solid;
+}

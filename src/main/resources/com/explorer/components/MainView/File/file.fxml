@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Priority ?>
+<?import javafx.scene.text.Text?>
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml"   >
+    <Label fx:id="fileName" text="test" />
+    <HBox HBox.hgrow="ALWAYS" />
+    <Label fx:id="fileSize"  alignment="CENTER" minWidth="-Infinity"/>
+</fx:root>
