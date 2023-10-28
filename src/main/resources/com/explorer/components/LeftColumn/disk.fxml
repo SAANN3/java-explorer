@@ -8,8 +8,8 @@
 
 <?import javafx.scene.text.Text?>
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml"  >
-    <Text fx:id="disk_name"  />
-    <Text fx:id="disk_path"  />
-    <Text fx:id="disk_space" />
+    <Label fx:id="disk_name"  />
+    <Label fx:id="disk_path"  />
+    <Label fx:id="disk_space" />
 
 </fx:root>

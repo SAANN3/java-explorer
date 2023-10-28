@@ -23,36 +23,43 @@ public class LeftColumn extends VBox {
             throw new RuntimeException(exception);
         }
         getStyleClass().add("borderStyle");
-        File[] disk_array = ListDisks();
-        System.out.println(Arrays.toString(disk_array));
-        for(int i = 0;i<disk_array.length;i++){
-            disk_placement.getChildren().add(new Disk(disk_array[i]));
-        }
+        showDisks();
 
     }
-    private File[] ListDisks()  {
-        File[] disks = new File[]{};
-        String OS = System.getProperty("os.name");
-        if(OS.startsWith("Linux")){
-            List<String> output = Utils.RunCommand(new String[]{"lsblk", "-e7","-a","-n","-i","-r","-o","NAME,MOUNTPOINT"});
-            for(int i =0;i<output.size();i++){
-                String line = output.get(i);
-                int space_index = line.indexOf(" ");
-                String mount_point = line.substring(space_index+1);
-                if(mount_point.equals("[SWAP]")){
-                    continue;
-                }
-                disks = Arrays.copyOf(disks,disks.length+1);
-                disks[disks.length-1] = new File(mount_point);
-            }
-
+    public void showDisks(){
+        disk_placement.getChildren().clear();
+        Disk[] disk_array = ListDisks();
+        for(int i = 0;i<disk_array.length;i++){
+            disk_placement.getChildren().add(disk_array[i]);
         }
-        if(OS.startsWith("Windows")){
-            disks = File.listRoots();
+    }
+    private Disk[] ListDisks()  {
+        Disk[] disks = new Disk[]{};
+        List<String> output = Utils.RunCommand(new String[]{"lsblk", "-e7","-a","-n","-i","-r","-p","-o","TYPE,LABEL,NAME,MOUNTPOINT"});
+        for(int i =0;i<output.size();i++){
+            String[] line = output.get(i).split(" ");
+            String type = line[0];
+            if(type.equals("disk")){
+                continue;
+            }
+            String label = line[1];
+            if(label.isEmpty()){
+                continue;
+            }
+            String nameDisk = line[2];
+            String mountPoint = "Not mounted";
+            if(line.length==4){
+                mountPoint= line[3];
+            }
+            if(mountPoint.equals("[SWAP]")){
+                continue;
+            }
+            disks = Arrays.copyOf(disks,disks.length+1);
+            disks[disks.length-1] = new Disk(type,label,nameDisk,mountPoint);
         }
         if(disks.length == 0){
             System.out.print("Couldn't find any partition");
-            //Platform.exit();
+            Platform.exit();
         }
         return disks;
     }

@@ -32,7 +32,7 @@ public class Utils {
     }
     public static List<String> RunCommand(String[] command){
         List<String> output = new ArrayList<String>();
-        ProcessBuilder pb = new ProcessBuilder("lsblk", "-e7","-a","-n","-i","-r","-o","LABEL,MOUNTPOINT");
+        ProcessBuilder pb = new ProcessBuilder(command);
         try{
             Process p = pb.start();
             InputStream is = p.getInputStream();

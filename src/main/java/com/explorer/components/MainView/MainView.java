@@ -23,12 +23,16 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 public class MainView extends VBox {
     private List<String> folderHistroy = new ArrayList<>();
@@ -346,6 +350,7 @@ public class MainView extends VBox {
     }
     public void fileProperties(File file)  {
         BasicFileAttributes attributes;
+
         DateFormat formater = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SS Z");
         try {
             attributes = Files.readAttributes(Path.of(file.getAbsolutePath()), BasicFileAttributes.class);
@@ -359,6 +364,30 @@ public class MainView extends VBox {
         Label label = new Label("Properties");
         Label name = new Label(file.getName());
         Label size = new Label(Utils.BytesToHumanReadable(file.length()));
+        if(file.isFile()){
+            size.setText(Utils.BytesToHumanReadable(file.length()));
+        }
+        else if(file.isDirectory()) {
+            long[] varSize = {0};
+            try{
+                Files.walkFileTree(Paths.get(file.getAbsolutePath()),new SimpleFileVisitor<>(){
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                        // sum size of all visit file
+                        varSize[0] += attrs.size();
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult visitFileFailed(Path file, IOException e) {
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            size.setText(Utils.BytesToHumanReadable(varSize[0]));
+        }
 
         VBox vPath = new VBox(5);
         Label vPathLabel = new Label("Location");
@@ -377,7 +406,10 @@ public class MainView extends VBox {
 
         VBox vCreated = new VBox(5);
         Label vCreatedLabel = new Label("Created");
-        Label vCreatedTime = new Label(formater.format(attributes.creationTime().toMillis()));
+        //java doesn't support getting creation time on linux, so here is workaround
+        String[] command = new String[]{"stat","-c","%W",file.getAbsolutePath().toString()};
+        Date creationDate = new Date(TimeUnit.SECONDS.toMillis(Long.parseLong(Utils.RunCommand(command).get(0))));
+        Label vCreatedTime = new Label(formater.format(creationDate));
         vCreated.getChildren().addAll(vCreatedLabel,vCreatedTime);
 
         HBox vPermissions = new HBox(5);

@@ -9,7 +9,10 @@
 <?import javafx.geometry.Insets?>
 <?import com.explorer.components.LeftColumn.*?>
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml"  fillWidth="false" >
-    <Label text="disks:" />
+    <HBox>
+        <Label text="disks:" />
+        <Button text="update" onAction="#showDisks"/>
+    </HBox>
     <VBox fx:id="disk_placement"  >
         <padding>
             <Insets left="20.0"/>

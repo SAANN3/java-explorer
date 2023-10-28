@@ -5,6 +5,7 @@ import com.explorer.components.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -26,6 +27,7 @@ public class TopBar extends HBox {
             throw new RuntimeException(exception);
         }
         getStyleClass().add("borderStyle");
+        currentFolderName.setTextOverrun(OverrunStyle.LEADING_ELLIPSIS);
         currentFolderNameStatic = currentFolderName;
     }
     @FXML private void backButton(){
@@ -40,6 +42,7 @@ public class TopBar extends HBox {
     public static void setMV(MainView givenMV){
         mv = givenMV;
     }
+    public static MainView getMV(){return mv;}
     public static void setCurrentFolderName(String path){
         currentFolderNameStatic.setText(path);
     }
